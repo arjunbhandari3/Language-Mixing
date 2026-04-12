@@ -31,6 +31,8 @@ def main() -> None:
     import json
 
     out_dir = Path(args.out)
+    if not out_dir.is_absolute():
+        out_dir = Path(__file__).parent / out_dir
     out_dir.mkdir(parents=True, exist_ok=True)
 
     config_path = Path(__file__).parent / "src" / "config" / "llm.json"

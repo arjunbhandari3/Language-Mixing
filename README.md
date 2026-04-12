@@ -23,6 +23,21 @@ Process Results
 Output Files (CSV, JSON)
 ```
 
+## Project Structure
+
+```text
+Language-Mixing/
+├─ main.py
+├─ sample_paragraphs.txt
+├─ requirements.txt
+├─ src/
+│  ├─ analyze_translations.py
+│  ├─ config/
+│  │  └─ llm.json
+│  └─ output/
+└─ README.md
+```
+
 ### Components
 
 - **Input Layer**: Text files with paragraphs separated by blank lines
@@ -61,7 +76,7 @@ Edit `src/config/llm.json` to set your model name and LM Studio server URL:
 
 ```json
 {
-  "model": "qwen2.5:7b-instruct",
+  "model": "<your-loaded-model-id>",
   "base_url": "http://127.0.0.1:1234/v1",
   "api_key": "lm-studio"
 }

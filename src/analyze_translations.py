@@ -95,19 +95,41 @@ def call_lmstudio_chat(
         "temperature": 0,
         "response_format": {"type": "json_object"},
     }
-    data = json.dumps(payload).encode("utf-8")
-    request = urllib.request.Request(
-        endpoint,
-        data=data,
-        headers={
-            "Content-Type": "application/json",
-            "Authorization": f"Bearer {api_key or 'lm-studio'}",
-        },
-        method="POST",
-    )
-    try:
+
+    def send_chat(request_payload: dict[str, Any]) -> str:
+        data = json.dumps(request_payload).encode("utf-8")
+        request = urllib.request.Request(
+            endpoint,
+            data=data,
+            headers={
+                "Content-Type": "application/json",
+                "Authorization": f"Bearer {api_key or 'lm-studio'}",
+            },
+            method="POST",
+        )
         with urllib.request.urlopen(request, timeout=timeout_sec) as response:
-            body = response.read().decode("utf-8")
+            return response.read().decode("utf-8")
+
+    try:
+        body = send_chat(payload)
+    except urllib.error.HTTPError as exc:
+        response_text = exc.read().decode("utf-8", errors="replace")
+        if exc.code == 400 and "response_format" in response_text:
+            fallback_payload = dict(payload)
+            fallback_payload.pop("response_format", None)
+            try:
+                body = send_chat(fallback_payload)
+            except urllib.error.HTTPError as fallback_exc:
+                fallback_text = fallback_exc.read().decode("utf-8", errors="replace")
+                raise RuntimeError(
+                    "LM Studio rejected the chat request "
+                    f"(HTTP {fallback_exc.code}). Response: {fallback_text}"
+                ) from fallback_exc
+        else:
+            raise RuntimeError(
+                "LM Studio rejected the chat request "
+                f"(HTTP {exc.code}). Response: {response_text}"
+            ) from exc
     except urllib.error.URLError as exc:
         raise RuntimeError(
             f"Failed to connect to LM Studio at {endpoint}. Ensure local server is running and URL is correct."
@@ -226,6 +248,7 @@ def read_input_paragraphs(input_path: Path) -> list[str]:
 
 
 def write_csv(rows: list[dict[str, str]], out_csv: Path) -> None:
+    out_csv.parent.mkdir(parents=True, exist_ok=True)
     with out_csv.open("w", newline="", encoding="utf-8") as f:
         writer = csv.DictWriter(
             f,
@@ -252,6 +275,8 @@ def main() -> None:
 
     input_path = Path(args.input_file)
     out_dir = Path(args.out)
+    if not out_dir.is_absolute():
+        out_dir = Path(__file__).parent.parent / out_dir
     out_dir.mkdir(parents=True, exist_ok=True)
 
     project_root = Path(__file__).parent.parent
