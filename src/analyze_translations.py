@@ -14,7 +14,7 @@ def load_llm_config(config_path: Path) -> dict[str, str]:
     if not config_path.exists():
         raise FileNotFoundError(
             f"LLM config file not found: {config_path}. "
-            "Create config/llm.json with model, base_url, and api_key."
+            "Create src/config/llm.json with model, base_url, and api_key."
         )
     payload = json.loads(config_path.read_text(encoding="utf-8"))
     if not isinstance(payload, dict):
@@ -245,7 +245,7 @@ def main() -> None:
     )
     parser.add_argument(
         "--out",
-        default="output",
+        default="src/output",
         help="Directory where analysis files will be written",
     )
     args = parser.parse_args()
@@ -255,7 +255,7 @@ def main() -> None:
     out_dir.mkdir(parents=True, exist_ok=True)
 
     project_root = Path(__file__).parent.parent
-    config_path = project_root / "config" / "llm.json"
+    config_path = project_root / "src" / "config" / "llm.json"
     llm_config = load_llm_config(config_path)
 
     paragraphs = read_input_paragraphs(input_path)

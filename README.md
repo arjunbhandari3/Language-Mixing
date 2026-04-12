@@ -29,7 +29,7 @@ Output Files (CSV, JSON)
 - **Processing Core**: `src/analyze_translations.py` — Handles paragraph parsing and LLM API communication
 - **LLM Integration**: Connects to LM Studio local server for token classification
 - **Output Layer**: Generates structured results in CSV and JSON formats
-- **Configuration**: `config/llm.json` — Centralized model and endpoint settings
+- **Configuration**: `src/config/llm.json` — Centralized model and endpoint settings
 - **Entry Points**: `main.py` for CLI execution
 
 ### Data Flow
@@ -57,7 +57,7 @@ If your policy blocks script activation, you can still run with:
 
 ## 2) Configure LM Studio Settings
 
-Edit `config/llm.json` to set your model name and LM Studio server URL:
+Edit `src/config/llm.json` to set your model name and LM Studio server URL:
 
 ```json
 {
@@ -81,7 +81,7 @@ Notes:
 ## 4) Analyze paragraphs using LLM
 
 ```powershell
-.\.venv\Scripts\python.exe src\analyze_translations.py sample_paragraphs.txt --out output
+.\.venv\Scripts\python.exe src\analyze_translations.py sample_paragraphs.txt --out src/output
 ```
 
 Input format for paragraph analysis:
@@ -90,24 +90,20 @@ Input format for paragraph analysis:
 
 Outputs:
 
-- `output/<input_stem>_analysis.csv`
-- `output/<input_stem>_summary.json`
-- `output/<input_stem>_paragraph_summary.json`
+- `src/output/<input_stem>_analysis.csv`
+- `src/output/<input_stem>_summary.json`
+- `src/output/<input_stem>_paragraph_summary.json`
 
 Notes:
 
-- Model and endpoint are configured in `config/llm.json`.
+- Model and endpoint are configured in `src/config/llm.json`.
 - Requires LM Studio server running with a chat/instruct model loaded.
 - Uses LLM for all token classification decisions.
 
 ## 5) Run via main entrypoint
 
 ```powershell
-.\.venv\Scripts\python.exe main.py sample_paragraphs.txt --out output
+.\.venv\Scripts\python.exe main.py sample_paragraphs.txt --out src/output
 ```
 
 This command runs text analysis and generates output files using the LM Studio config.
-
-```
-
-```

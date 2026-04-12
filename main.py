@@ -11,7 +11,7 @@ def main() -> None:
         "input_file",
         help="Path to paragraph text file (.txt). Separate paragraphs with blank lines.",
     )
-    parser.add_argument("--out", default="output")
+    parser.add_argument("--out", default="src/output")
     args = parser.parse_args()
 
     input_path = Path(args.input_file)
@@ -33,7 +33,7 @@ def main() -> None:
     out_dir = Path(args.out)
     out_dir.mkdir(parents=True, exist_ok=True)
 
-    config_path = Path(__file__).parent / "config" / "llm.json"
+    config_path = Path(__file__).parent / "src" / "config" / "llm.json"
     llm_config = load_llm_config(config_path)
 
     paragraphs = read_input_paragraphs(input_path)
