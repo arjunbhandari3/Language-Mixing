@@ -1,0 +1,61 @@
+Sample Annotations  
+Example 1: Mixed script Nepali–English (Romanized)  
+“Aaja office ma meeting cha, tara mobile charge bhayena.” 
+(Today there’s a meeting in the office, but my mobile isn’t charged.) 
+Token Language Borrowing Explanation 
+Aaja NE NATIVE Nepali word (today) 
+office EN BORROWED Established loanword 
+ma NE NATIVE Nepali postposition (in) 
+meeting EN BORROWED Integrated into Nepali 
+cha NE NATIVE Nepali copula (is) 
+tara NE NATIVE Nepali conjunction (but) 
+mobile EN BORROWED Common loanword 
+charge EN BORROWED English “charge” 
+bhayena NE NATIVE Nepali negation 
+ 
+Example 2: Code-switched vs. borrowed distinction  
+“Ma computer kinna janu parcha because processor purano bhaisakyo.” 
+(I have to go buy a computer because the processor has become old.) 
+Token Language Borrowing Explanation 
+computer EN BORROWED Established loanword 
+because EN CODE-MIXED Temporary insertion 
+processor EN BORROWED Technical term 
+purano NE NATIVE Nepali “old”
+
+Example 3: Mixed Script Nepali-English (Devaganari)
+"आज office मा meeting छ, तर mobile charge भएन।"
+(Today there’s a meeting in the office, but my mobile isn’t charged.)
+Token Language Borrowing Explanation
+आज NE NATIVE Nepali word (today)
+office EN BORROWED Established loanword
+मा NE NATIVE Nepali postposition (in)
+meeting EN BORROWED Integrated into Nepali
+छ NE NATIVE Nepali copula (is)
+तर NE NATIVE Nepali conjunction (but)
+mobile EN BORROWED Common loanword
+charge EN BORROWED English “charge”
+भएन NE NATIVE Nepali negation
+
+Example 4: Code-switched vs. borrowed distinction in Devaganari
+"म computer किन्ने जानु पर्छ because processor पुरानो भैसक्यो।"
+(I have to go buy a computer because the processor has become old.)
+Token Language Borrowing Explanation
+computer EN BORROWED Established loanword
+because EN CODE-MIXED Temporary insertion
+processor EN BORROWED Technical term
+पुरानो NE NATIVE Nepali “old”
+भैसक्यो NE NATIVE Nepali “has become”
+
+Example 5: Mixed script with Nepali and English (Romanized and Devaganari)
+"Aaja office मा meeting छ, तर mobile charge भएन।"
+(Today there’s a meeting in the office, but my mobile isn’t charged.)
+Token Language Borrowing Explanation
+Aaja NE NATIVE Nepali word (today)
+office EN BORROWED Established loanword
+मा NE NATIVE Nepali postposition (in)
+meeting EN BORROWED Integrated into Nepali
+छ NE NATIVE Nepali copula (is)
+तर NE NATIVE Nepali conjunction (but)
+mobile EN BORROWED Common loanword
+charge EN BORROWED English “charge”
+भएन NE NATIVE Nepali negation
