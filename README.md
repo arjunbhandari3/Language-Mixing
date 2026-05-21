@@ -99,6 +99,18 @@ Notes:
 .\.venv\Scripts\python.exe src\analyze_translations.py sample_paragraphs.txt --out src/output
 ```
 
+Default dataset split setup:
+
+- Training: 70%
+- Validation: 15%
+- Test: 15%
+
+You can override these with CLI flags if needed:
+
+```powershell
+.\.venv\Scripts\python.exe src\analyze_translations.py sample_paragraphs.txt --out src/output --train-ratio 0.70 --val-ratio 0.15 --test-ratio 0.15 --seed 42
+```
+
 Input format for paragraph analysis:
 
 - Plain text file where each paragraph is separated by a blank line.
@@ -108,6 +120,9 @@ Outputs:
 - `src/output/<input_stem>_analysis.csv`
 - `src/output/<input_stem>_summary.json`
 - `src/output/<input_stem>_paragraph_summary.json`
+- `src/output/<input_stem>_train.csv`
+- `src/output/<input_stem>_validation.csv`
+- `src/output/<input_stem>_test.csv`
 
 Notes:
 

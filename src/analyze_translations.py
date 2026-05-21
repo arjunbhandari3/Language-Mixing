@@ -1,6 +1,8 @@
 import argparse
 import csv
 import json
+import math
+import random
 import re
 import urllib.error
 import urllib.request
@@ -258,6 +260,71 @@ def write_csv(rows: list[dict[str, str]], out_csv: Path) -> None:
         writer.writerows(rows)
 
 
+def validate_split_ratios(train_ratio: float, val_ratio: float, test_ratio: float) -> None:
+    for name, value in (("train", train_ratio), ("validation", val_ratio), ("test", test_ratio)):
+        if value < 0:
+            raise ValueError(f"{name.title()} ratio must be non-negative.")
+
+    total = train_ratio + val_ratio + test_ratio
+    if not math.isclose(total, 1.0, rel_tol=0.0, abs_tol=1e-9):
+        raise ValueError(
+            "Split ratios must sum to 1.0. "
+            f"Received train={train_ratio}, validation={val_ratio}, test={test_ratio}."
+        )
+
+
+def split_rows_by_paragraph(
+    rows: list[dict[str, str]],
+    train_ratio: float,
+    val_ratio: float,
+    test_ratio: float,
+    seed: int,
+) -> dict[str, list[dict[str, str]]]:
+    validate_split_ratios(train_ratio, val_ratio, test_ratio)
+
+    paragraph_ids = sorted({row["Paragraph"] for row in rows}, key=lambda x: int(x))
+    if not paragraph_ids:
+        return {"train": [], "validation": [], "test": []}
+
+    randomizer = random.Random(seed)
+    shuffled = paragraph_ids[:]
+    randomizer.shuffle(shuffled)
+
+    total = len(shuffled)
+    train_count = int(round(total * train_ratio))
+    val_count = int(round(total * val_ratio))
+    if train_count + val_count > total:
+        val_count = max(0, total - train_count)
+    test_count = total - train_count - val_count
+
+    train_ids = set(shuffled[:train_count])
+    val_ids = set(shuffled[train_count : train_count + val_count])
+    test_ids = set(shuffled[train_count + val_count : train_count + val_count + test_count])
+
+    splits = {"train": [], "validation": [], "test": []}
+    for row in rows:
+        paragraph = row["Paragraph"]
+        if paragraph in train_ids:
+            splits["train"].append(row)
+        elif paragraph in val_ids:
+            splits["validation"].append(row)
+        else:
+            splits["test"].append(row)
+
+    return splits
+
+
+def write_split_csvs(stem: str, out_dir: Path, split_rows: dict[str, list[dict[str, str]]]) -> dict[str, Path]:
+    paths = {
+        "train": out_dir / f"{stem}_train.csv",
+        "validation": out_dir / f"{stem}_validation.csv",
+        "test": out_dir / f"{stem}_test.csv",
+    }
+    for split_name, csv_path in paths.items():
+        write_csv(split_rows[split_name], csv_path)
+    return paths
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(
         description="Analyze extracted translation paragraphs into token-level code-mixing categories."
@@ -270,6 +337,30 @@ def main() -> None:
         "--out",
         default="src/output",
         help="Directory where analysis files will be written",
+    )
+    parser.add_argument(
+        "--train-ratio",
+        type=float,
+        default=0.70,
+        help="Training split ratio (default: 0.70)",
+    )
+    parser.add_argument(
+        "--val-ratio",
+        type=float,
+        default=0.15,
+        help="Validation split ratio (default: 0.15)",
+    )
+    parser.add_argument(
+        "--test-ratio",
+        type=float,
+        default=0.15,
+        help="Test split ratio (default: 0.15)",
+    )
+    parser.add_argument(
+        "--seed",
+        type=int,
+        default=42,
+        help="Random seed for deterministic splitting (default: 42)",
     )
     args = parser.parse_args()
 
@@ -300,11 +391,19 @@ def main() -> None:
 
     summary = summarize(rows)
     paragraph_summary = summarize_by_paragraph(rows)
+    split_rows = split_rows_by_paragraph(
+        rows,
+        train_ratio=args.train_ratio,
+        val_ratio=args.val_ratio,
+        test_ratio=args.test_ratio,
+        seed=args.seed,
+    )
 
     stem = input_path.stem
     table_path = out_dir / f"{stem}_analysis.csv"
     summary_path = out_dir / f"{stem}_summary.json"
     paragraph_summary_path = out_dir / f"{stem}_paragraph_summary.json"
+    split_paths = write_split_csvs(stem, out_dir, split_rows)
 
     write_csv(rows, table_path)
     summary_path.write_text(json.dumps(summary, ensure_ascii=False, indent=2), encoding="utf-8")
@@ -316,6 +415,9 @@ def main() -> None:
     print(f"Saved token analysis table: {table_path}")
     print(f"Saved summary metrics: {summary_path}")
     print(f"Saved paragraph summary metrics: {paragraph_summary_path}")
+    print(f"Saved training split: {split_paths['train']}")
+    print(f"Saved validation split: {split_paths['validation']}")
+    print(f"Saved test split: {split_paths['test']}")
 
 
 if __name__ == "__main__":

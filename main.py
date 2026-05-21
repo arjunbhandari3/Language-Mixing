@@ -12,6 +12,10 @@ def main() -> None:
         help="Path to paragraph text file (.txt). Separate paragraphs with blank lines.",
     )
     parser.add_argument("--out", default="src/output")
+    parser.add_argument("--train-ratio", type=float, default=0.70)
+    parser.add_argument("--val-ratio", type=float, default=0.15)
+    parser.add_argument("--test-ratio", type=float, default=0.15)
+    parser.add_argument("--seed", type=int, default=42)
     args = parser.parse_args()
 
     input_path = Path(args.input_file)
@@ -26,6 +30,8 @@ def main() -> None:
         analyze_paragraph_with_llm,
         summarize,
         summarize_by_paragraph,
+        split_rows_by_paragraph,
+        write_split_csvs,
         write_csv,
     )
     import json
@@ -49,11 +55,19 @@ def main() -> None:
 
     summary = summarize(rows)
     paragraph_summary = summarize_by_paragraph(rows)
+    split_rows = split_rows_by_paragraph(
+        rows,
+        train_ratio=args.train_ratio,
+        val_ratio=args.val_ratio,
+        test_ratio=args.test_ratio,
+        seed=args.seed,
+    )
 
     stem = input_path.stem
     table_path = out_dir / f"{stem}_analysis.csv"
     summary_path = out_dir / f"{stem}_summary.json"
     paragraph_summary_path = out_dir / f"{stem}_paragraph_summary.json"
+    split_paths = write_split_csvs(stem, out_dir, split_rows)
 
     write_csv(rows, table_path)
     summary_path.write_text(json.dumps(summary, ensure_ascii=False, indent=2), encoding="utf-8")
@@ -64,6 +78,9 @@ def main() -> None:
     print(f"Saved token analysis table: {table_path}")
     print(f"Saved summary metrics: {summary_path}")
     print(f"Saved paragraph summary metrics: {paragraph_summary_path}")
+    print(f"Saved training split: {split_paths['train']}")
+    print(f"Saved validation split: {split_paths['validation']}")
+    print(f"Saved test split: {split_paths['test']}")
 
 
 if __name__ == "__main__":
