@@ -1,7 +1,29 @@
-Aaja office ma meeting cha, tara mobile charge bhayena.
+Aaja office ma client meeting thiyo tara internet ekdum unstable bhayera presentation properly load bhayena. Manager le sabai team members lai report update garna bhanepachi maile laptop kholera database logs check gare.
 
-Ma computer kinna janu parcha because processor purano bhaisakyo.
+आज हाम्रो team ले नयाँ feature deploy गर्यो तर production server मा unexpected error आयो। DevOps team ले तुरुन्त rollback गरेर system stable banayo ani monitoring alerts fix गरे।
 
-आज office मा meeting छ, तर mobile charge भएन।
+Ma bihana café ma baseko थिएँ assignment लेख्न, tara WiFi frequently disconnect bhairahyo. Tyas pachi maile mobile hotspot use garera file upload complete गरेँ।
 
-म कम्प्युटर किन्न जानु पर्छ किनभने प्रोसेसर पुरानो भैसक्यो।
+हिजो हामीले machine learning project ko dataset clean garna सुरु गर्यौं तर missing values धेरै bhayeko कारण preprocessing step slow भयो।
+
+Maile नयाँ mobile app download gare tara login garna khojda authentication server response dherai slow थियो ani app crash bhayo।
+
+आज class मा sir le operating system ko scheduling algorithms explain garnुभयो ani students le GitHub ma notes share गरे।
+
+Hamro startup le cloud migration plan finalize gar्यो tara existing infrastructure integrate garna केही technical challenges आयो।
+
+Maile online payment garna khojeko थिएँ tara QR scanner काम नगरेपछि manual card entry गर्नुपर्यो।
+
+आज morning office जाँदा traffic dherai thiyo ani ride-sharing app le alternative route suggest गर्यो जसले time save भयो।
+
+We were working on frontend UI but backend API unstable bhayeko कारण deployment postpone गर्नुपर्यो।
+
+आज weather अचानक change bhayo ani office ko network pani down bhayo. IT team le router restart गरेपछि connection feri restore भयो।
+
+Maile research paper submit garna khojeko थिएँ tara plagiarism checker le formatting issues देखायो।
+
+Hami team meeting मा sprint planning garirहेका थियौं when client requirement sudden change bhayo.
+
+आज library मा बसेर coding गर्दै थिएँ तर laptop battery low bhayera काम बीचमै रोकियो।
+
+Maile GitHub repo clone gare tara dependencies install huda version conflict आयो।

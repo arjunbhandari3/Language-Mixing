@@ -32,6 +32,12 @@ Language-Mixing/
 ├─ requirements.txt
 ├─ src/
 │  ├─ analyze_translations.py
+│  ├─ utils/
+│  │  ├─ data_processing.py
+│  │  ├─ llm_client.py
+│  │  ├─ pos.py
+│  │  ├─ dataset_split.py
+│  │  ├─ summaries.py
 │  ├─ config/
 │  │  └─ llm.json
 │  └─ output/
@@ -41,7 +47,12 @@ Language-Mixing/
 ### Components
 
 - **Input Layer**: Text files with paragraphs separated by blank lines
-- **Processing Core**: `src/analyze_translations.py` — Handles paragraph parsing and LLM API communication
+- **Processing Core**: `src/analyze_translations.py` — Orchestrates the full pipeline
+- **Data Utilities**: `src/utils/data_processing.py` — Tokenization, paragraph parsing, CSV writing
+- **LLM Utilities**: `src/utils/llm_client.py` — Prompting, API calls, JSON parsing, config loading
+- **POS Utilities**: `src/utils/pos.py` — UPOS tag definitions and validation
+- **Split Utilities**: `src/utils/dataset_split.py` — Train/validation/test split logic and split outputs
+- **Summary Utilities**: `src/utils/summaries.py` — Global and per-paragraph summaries
 - **LLM Integration**: Connects to LM Studio local server for token classification
 - **Output Layer**: Generates structured results in CSV and JSON formats
 - **Configuration**: `src/config/llm.json` — Centralized model and endpoint settings
